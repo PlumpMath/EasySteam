@@ -1,0 +1,7 @@
+Bin/
+*.sdf
+*.opensdf
+*.suo
+*.vcxproj.user
+ipch/
+Obj/
