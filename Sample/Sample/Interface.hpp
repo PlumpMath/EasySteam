@@ -4,7 +4,6 @@
 #include <Steamworks.h>
 
 #include "User.hpp"
-#include "Friends.hpp"
 
 namespace EasySteam
 {
@@ -16,7 +15,6 @@ namespace EasySteam
 		static void Kill();
 
 		User* GetUser();
-		Friends* GetFriends();
 
 	private:
 
@@ -24,7 +22,6 @@ namespace EasySteam
 		~Interface();
 
 		std::unique_ptr<User> mUserImpl;
-		std::unique_ptr<Friends> mFriendsImpl;
 
 		CSteamAPILoader mLoader;
 		CreateInterfaceFn mFactory;

@@ -40,7 +40,6 @@ namespace EasySteam
 		mUser = mSteamClient->ConnectToGlobalUser(mPipe);
 
 		mUserImpl.reset(new User((ISteamUser016*)mSteamClient->GetISteamUser(mUser, mPipe, STEAMUSER_INTERFACE_VERSION_016)));
-		mFriendsImpl.reset(new Friends((ISteamFriends012*)mSteamClient->GetISteamFriends(mUser, mPipe, STEAMFRIENDS_INTERFACE_VERSION_012)));
 	}
 
 	Interface::~Interface()
@@ -51,15 +50,5 @@ namespace EasySteam
 			mSteamClient->BReleaseSteamPipe(mPipe);
 			mSteamClient->BShutdownIfAllPipesClosed();
 		}
-	}
-
-	User* Interface::GetUser()
-	{
-		return mUserImpl.get();
-	}
-
-	Friends* Interface::GetFriends()
-	{
-		return mFriendsImpl.get();
 	}
 }
