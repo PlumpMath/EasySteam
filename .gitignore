@@ -5,3 +5,4 @@ Bin/
 *.vcxproj.user
 ipch/
 Obj/
+*.rgba

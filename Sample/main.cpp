@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 bool run = true;
 
@@ -32,11 +33,16 @@ int main()
 
 	std:: cout << "And here are my many friends ! " << std::endl;
 
+	uint64_t i = 0;
 	std::for_each(steamInterface.GetFriends()->Begin(), steamInterface.GetFriends()->End(), 
-		[](EasySteam::Friend::pointer pPtr)
+		[&i](EasySteam::Friend::pointer pPtr)
 		{
 			std::cout << pPtr->GetPersonaName() << std::endl;
-			std::cout << pPtr->GetAvatar(EasySteam::Avatar::LARGE)->GetRGBA().size() << std::endl;
+			std::ofstream dump(std::to_string(i) + std::string(".rgba"), std::ios::binary);
+			auto data = pPtr->GetAvatar(EasySteam::Avatar::LARGE)->GetRGBA();
+			dump.write(data.c_str(), data.size());
+			dump.close();
+			++i;
 			//pPtr->SendMessage("Hello I am a bot !");
 		});
 
