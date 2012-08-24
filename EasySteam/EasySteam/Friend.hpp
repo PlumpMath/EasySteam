@@ -11,6 +11,8 @@ namespace EasySteam
 
 		typedef std::shared_ptr<Friend> pointer;
 
+		~Friend();
+
 		std::string GetPersonaName();
 
 		void SendMessage(const std::string& pMessage);
@@ -19,7 +21,7 @@ namespace EasySteam
 
 	private:
 
-		Friend(class Friends* pFriends, CSteamID pId);
+		Friend(CSteamID pId);
 
 		class Friends* mFriends;
 		CSteamID mId;

@@ -4,31 +4,29 @@
 
 namespace EasySteam
 {
-	Friends::iterator::iterator(uint32_t pId, Friends* pImpl)
-		:mId(pId),mImpl(pImpl),mData(nullptr)
+	Friends::iterator::iterator(uint32_t pId)
+		:mId(pId),mData(nullptr)
 	{
-		if(mImpl)
-			mData = mImpl->GetFriendById(mId);
+		if(pId < Interface::GetInstance().GetFriends()->GetCount())
+			mData = Interface::GetInstance().GetFriends()->GetFriendById(mId);
 	}
 
 	Friends::iterator::iterator(const iterator& pItor)
 	{
 		mData = pItor.mData;
 		mId = pItor.mId;
-		mImpl = pItor.mImpl;
 	}
 
 	Friends::iterator& Friends::iterator::operator++()
 	{
 		++mId;
 		
-		if(mId >= mImpl->GetCount())
+		if(mId >= Interface::GetInstance().GetFriends()->GetCount())
 		{
 			mData = nullptr;
-			mImpl = nullptr;
 		}
 		else
-			mData = mImpl->GetFriendById(mId);
+			mData = Interface::GetInstance().GetFriends()->GetFriendById(mId);
 
 		return *this;
 	}
@@ -41,7 +39,7 @@ namespace EasySteam
 
 	bool Friends::iterator::operator==(const Friends::iterator& pItor)
 	{
-		return (mData == pItor.mData) && (mImpl == pItor.mImpl);
+		return (mData == pItor.mData);
 	}
 
 	bool Friends::iterator::operator!=(const Friends::iterator& pItor)
@@ -61,7 +59,7 @@ namespace EasySteam
 
 	Friend::pointer Friends::GetFriendById(uint32_t pId)
 	{
-		return Friend::pointer(new Friend(this, mFriendsImpl->GetFriendByIndex(pId, k_EFriendFlagImmediate)));
+		return Friend::pointer(new Friend(mFriendsImpl->GetFriendByIndex(pId, k_EFriendFlagImmediate)));
 	}
 
 	std::string Friends::GetPersonaName(CSteamID& pId)
@@ -76,12 +74,12 @@ namespace EasySteam
 
 	Friends::iterator Friends::Begin()
 	{
-		return Friends::iterator(0, this);
+		return Friends::iterator(0);
 	}
 
 	Friends::iterator Friends::End()
 	{
-		return Friends::iterator((std::numeric_limits<uint32_t>::max)(), nullptr);
+		return Friends::iterator((std::numeric_limits<uint32_t>::max)());
 	}
 
 	void Friends::SendMessage(CSteamID& pSteamId, const std::string& pMessage)
@@ -94,19 +92,22 @@ namespace EasySteam
 		if(pCallback.m_iCallback == FriendChatMsg_t::k_iCallback)
 		{
 			FriendChatMsg_t* msg = (FriendChatMsg_t*)pCallback.m_pubParam;
-			if(msg->m_ulSenderID != Interface::GetInstance().GetUser()->GetSteamID())
+
+			std::string message;
+			EChatEntryType eMsgType;
+
+			message.resize(k_cchFriendChatMsgMax);
+			message.resize(mFriendsImpl->GetFriendMessage(msg->m_ulFriendID, msg->m_iChatID, (void*)&message[0], message.size(), &eMsgType));
+
+			if(eMsgType == k_EChatEntryTypeChatMsg || eMsgType == k_EChatEntryTypeEmote)
 			{
-				std::string message;
-				EChatEntryType eMsgType;
-
-				message.resize(k_cchFriendChatMsgMax);
-				message.resize(mFriendsImpl->GetFriendMessage(msg->m_ulFriendID, msg->m_iChatID, (void*)&message[0], message.size(), &eMsgType));
-
-				if(eMsgType == k_EChatEntryTypeChatMsg || eMsgType == k_EChatEntryTypeEmote)
+				if(msg->m_ulSenderID != Interface::GetInstance().GetUser()->GetSteamID())
 				{
-					Friend::pointer ptr(new Friend(this, msg->m_ulFriendID));
+					Friend::pointer ptr(new Friend(msg->m_ulFriendID));
 					OnFriendMessage(message, ptr);
 				}
+				else
+					OnSendMessage(message);
 			}
 		}
 	}

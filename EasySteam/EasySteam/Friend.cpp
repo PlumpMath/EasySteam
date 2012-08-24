@@ -1,13 +1,17 @@
 #include "Friend.hpp"
 #include "Friends.hpp"
+#include "Interface.hpp"
 
 
 namespace EasySteam
 {
-	Friend::Friend(class Friends* pFriends, CSteamID pId)
-		:mFriends(pFriends), mId(pId)
+	Friend::Friend(CSteamID pId)
+		:mFriends(Interface::GetInstance().GetFriends()), mId(pId)
 	{
+	}
 
+	Friend::~Friend()
+	{
 	}
 
 	std::string Friend::GetPersonaName()

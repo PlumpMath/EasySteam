@@ -10,15 +10,14 @@ namespace EasySteam
 	{
 	public:
 
-		class EZ_STEAM_API iterator : public std::iterator<std::input_iterator_tag, Friend*>
+		class EZ_STEAM_API iterator : public std::iterator<std::input_iterator_tag, Friend::pointer>
 		{
-			Friends* mImpl;
 			Friend::pointer mData;
 			uint32_t mId;
 
 			friend class Friends;
 
-			iterator(uint32_t pId, Friends* pImpl);
+			iterator(uint32_t pId);
 
 		public:
 
@@ -40,6 +39,7 @@ namespace EasySteam
 		void SendMessage(CSteamID& pSteamId, const std::string& pMessage);
 
 		boost::signal<void(const std::string& pMessage, Friend::pointer pSender)> OnFriendMessage;
+		boost::signal<void(const std::string& pMessage)> OnSendMessage;
 
 	private:
 
