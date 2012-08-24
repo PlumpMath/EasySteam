@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CompilerDef.hpp"
-#include "ISteamFriends012.h"
+#include "ISteamFriends013.h"
 #include "Friend.hpp"
 
 namespace EasySteam
@@ -34,16 +34,20 @@ namespace EasySteam
 		iterator End();
 
 		Friend::pointer GetFriendById(uint32_t pId);
-
 		std::string GetPersonaName(CSteamID& pId);
-
 		uint32_t GetCount();
+
+		void SendMessage(CSteamID& pSteamId, const std::string& pMessage);
+
+		boost::signal<void(const std::string& pMessage, Friend::pointer pSender)> OnFriendMessage;
 
 	private:
 
-		Friends(ISteamFriends012* pImpl);
+		void DoCallback(CallbackMsg_t& pCallback);
 
-		ISteamFriends012* mFriendsImpl;
+		Friends(ISteamFriends013* pImpl);
+
+		ISteamFriends013* mFriendsImpl;
 
 		friend class Interface;
 	};

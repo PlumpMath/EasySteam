@@ -1,5 +1,6 @@
 #include "Friends.hpp"
 #include "Friend.hpp"
+#include "Interface.hpp"
 
 namespace EasySteam
 {
@@ -53,7 +54,7 @@ namespace EasySteam
 		return mData;
 	}
 
-	Friends::Friends(ISteamFriends012* pImpl)
+	Friends::Friends(ISteamFriends013* pImpl)
 		:mFriendsImpl(pImpl)
 	{
 	}
@@ -81,5 +82,32 @@ namespace EasySteam
 	Friends::iterator Friends::End()
 	{
 		return Friends::iterator((std::numeric_limits<uint32_t>::max)(), nullptr);
+	}
+
+	void Friends::SendMessage(CSteamID& pSteamId, const std::string& pMessage)
+	{
+		mFriendsImpl->ReplyToFriendMessage(pSteamId, pMessage.c_str());
+	}
+
+	void Friends::DoCallback(CallbackMsg_t& pCallback)
+	{
+		if(pCallback.m_iCallback == FriendChatMsg_t::k_iCallback)
+		{
+			FriendChatMsg_t* msg = (FriendChatMsg_t*)pCallback.m_pubParam;
+			if(msg->m_ulSenderID != Interface::GetInstance().GetUser()->GetSteamID())
+			{
+				std::string message;
+				EChatEntryType eMsgType;
+
+				message.resize(k_cchFriendChatMsgMax);
+				message.resize(mFriendsImpl->GetFriendMessage(msg->m_ulFriendID, msg->m_iChatID, (void*)&message[0], message.size(), &eMsgType));
+
+				if(eMsgType == k_EChatEntryTypeChatMsg || eMsgType == k_EChatEntryTypeEmote)
+				{
+					Friend::pointer ptr(new Friend(this, msg->m_ulFriendID));
+					OnFriendMessage(message, ptr);
+				}
+			}
+		}
 	}
 }

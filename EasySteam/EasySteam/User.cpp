@@ -1,4 +1,5 @@
 #include "User.hpp"
+#include "Interface.hpp"
 
 namespace EasySteam
 {
@@ -20,5 +21,10 @@ namespace EasySteam
 		mUserImpl->GetUserDataFolder(&dir[0], 2048);
 
 		return dir;
+	}
+
+	std::string User::GetPersonaName()
+	{
+		return std::move(std::string(Interface::GetInstance().GetFriends()->GetPersonaName(GetSteamID())));
 	}
 }

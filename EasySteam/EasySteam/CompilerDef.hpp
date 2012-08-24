@@ -10,4 +10,6 @@
 #include <cstdint>
 #include <numeric>
 
+#include <boost/signals.hpp>
+
 #pragma warning(disable: 4251)

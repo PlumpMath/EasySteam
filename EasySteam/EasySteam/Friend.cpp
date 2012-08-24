@@ -14,4 +14,14 @@ namespace EasySteam
 	{
 		return std::move(mFriends->GetPersonaName(mId));
 	}
+
+	void Friend::SendMessage(const std::string& pMessage)
+	{
+		mFriends->SendMessage(mId, pMessage);
+	}
+
+	CSteamID Friend::GetSteamID()
+	{
+		return mId;
+	}
 }

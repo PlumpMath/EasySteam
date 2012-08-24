@@ -23,7 +23,8 @@ namespace EasySteam
 
 	void Interface::Kill()
 	{
-		delete instance; instance = nullptr;
+		delete instance; 
+		instance = nullptr;
 	}
 
 	Interface::Interface()
@@ -40,7 +41,7 @@ namespace EasySteam
 		mUser = mSteamClient->ConnectToGlobalUser(mPipe);
 
 		mUserImpl.reset(new User((ISteamUser016*)mSteamClient->GetISteamUser(mUser, mPipe, STEAMUSER_INTERFACE_VERSION_016)));
-		mFriendsImpl.reset(new Friends((ISteamFriends012*)mSteamClient->GetISteamFriends(mUser, mPipe, STEAMFRIENDS_INTERFACE_VERSION_012)));
+		mFriendsImpl.reset(new Friends((ISteamFriends013*)mSteamClient->GetISteamFriends(mUser, mPipe, STEAMFRIENDS_INTERFACE_VERSION_013)));
 	}
 
 	Interface::~Interface()
@@ -50,6 +51,31 @@ namespace EasySteam
 			mSteamClient->ReleaseUser(mPipe, mUser);
 			mSteamClient->BReleaseSteamPipe(mPipe);
 			mSteamClient->BShutdownIfAllPipesClosed();
+		}
+	}
+
+	void Interface::Run()
+	{
+		if(instance && instance->mSteamClient)
+		{
+			if(instance->mUserImpl && instance->mFriendsImpl)
+			{
+				instance->DoRun();
+			}
+		}
+	}
+
+	void Interface::DoRun()
+	{
+		CallbackMsg_t callBack;
+		while ( Steam_BGetCallback( instance->mPipe, &callBack ) )
+		{
+			int opcode = callBack.m_iCallback - (callBack.m_iCallback % 100);
+			opcode /= 100;
+
+			if(opcode == 3 || opcode == 8) mFriendsImpl->DoCallback(callBack);
+
+			Steam_FreeLastCallback(mPipe);
 		}
 	}
 

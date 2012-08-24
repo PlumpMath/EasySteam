@@ -14,6 +14,7 @@ namespace EasySteam
 
 		static Interface& GetInstance();
 		static void Kill();
+		static void Run();
 
 		User* GetUser();
 		Friends* GetFriends();
@@ -25,6 +26,8 @@ namespace EasySteam
 
 		std::unique_ptr<User> mUserImpl;
 		std::unique_ptr<Friends> mFriendsImpl;
+
+		void DoRun();
 
 		CSteamAPILoader mLoader;
 		CreateInterfaceFn mFactory;

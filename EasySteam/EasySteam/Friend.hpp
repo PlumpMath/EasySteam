@@ -13,6 +13,10 @@ namespace EasySteam
 
 		std::string GetPersonaName();
 
+		void SendMessage(const std::string& pMessage);
+
+		CSteamID GetSteamID();
+
 	private:
 
 		Friend(class Friends* pFriends, CSteamID pId);

@@ -11,7 +11,7 @@ namespace EasySteam
 
 		CSteamID GetSteamID();
 		std::string GetUserDirectory(); 
-
+		std::string GetPersonaName();
 
 	private:
 
