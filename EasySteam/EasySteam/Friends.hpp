@@ -3,6 +3,7 @@
 #include "CompilerDef.hpp"
 #include "ISteamFriends013.h"
 #include "Friend.hpp"
+#include "Avatar.hpp"
 
 namespace EasySteam
 {
@@ -40,6 +41,7 @@ namespace EasySteam
 
 		boost::signal<void(const std::string& pMessage, Friend::pointer pSender)> OnFriendMessage;
 		boost::signal<void(const std::string& pMessage)> OnSendMessage;
+		boost::signal<void(Friend::pointer, Avatar::Size)> OnAvatarLoaded;
 
 	private:
 
@@ -50,5 +52,7 @@ namespace EasySteam
 		ISteamFriends013* mFriendsImpl;
 
 		friend class Interface;
+		friend class Friend;
+		friend class Avatar;
 	};
 }

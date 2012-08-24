@@ -2,6 +2,7 @@
 
 #include "CompilerDef.hpp"
 #include <Steamworks.h>
+#include "Avatar.hpp"
 
 namespace EasySteam
 {
@@ -14,17 +15,18 @@ namespace EasySteam
 		~Friend();
 
 		std::string GetPersonaName();
+		CSteamID GetSteamID();
+		Avatar::pointer GetAvatar(Avatar::Size pSize);
 
 		void SendMessage(const std::string& pMessage);
-
-		CSteamID GetSteamID();
 
 	private:
 
 		Friend(CSteamID pId);
 
-		class Friends* mFriends;
-		CSteamID mId;
+		class Friends*	mFriends;
+		CSteamID		mId;
+
 		friend class Friends;
 	};
 }

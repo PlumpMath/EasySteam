@@ -1,5 +1,7 @@
 #pragma once
 
+#define STEAMWORKS_CLIENT_INTERFACES
+
 #ifdef EZ_STEAM_EXPORT
 #define EZ_STEAM_API __declspec(dllexport)
 #else

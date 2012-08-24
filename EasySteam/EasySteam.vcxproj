@@ -7,6 +7,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EasySteam\Avatar.hpp" />
     <ClInclude Include="EasySteam\CompilerDef.hpp" />
     <ClInclude Include="EasySteam\Friend.hpp" />
     <ClInclude Include="EasySteam\Friends.hpp" />
@@ -14,6 +15,7 @@
     <ClInclude Include="EasySteam\User.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EasySteam\Avatar.cpp" />
     <ClCompile Include="EasySteam\Friend.cpp" />
     <ClCompile Include="EasySteam\Friends.cpp" />
     <ClCompile Include="EasySteam\Interface.cpp" />

@@ -37,9 +37,14 @@ namespace EasySteam
 		if(!mSteamClient)
 			throw std::runtime_error("Steamclient not started.");
 
+		mClientEngine = (IClientEngine*)mFactory(CLIENTENGINE_INTERFACE_VERSION, NULL);
+		if(!mClientEngine)
+			throw std::runtime_error("Steamclient not started.");
+
 		mPipe = mSteamClient->CreateSteamPipe();
 		mUser = mSteamClient->ConnectToGlobalUser(mPipe);
 
+		mClientUtils = (IClientUtils*)mClientEngine->GetIClientUtils(mPipe, CLIENTUTILS_INTERFACE_VERSION);
 		mUserImpl.reset(new User((ISteamUser016*)mSteamClient->GetISteamUser(mUser, mPipe, STEAMUSER_INTERFACE_VERSION_016)));
 		mFriendsImpl.reset(new Friends((ISteamFriends013*)mSteamClient->GetISteamFriends(mUser, mPipe, STEAMFRIENDS_INTERFACE_VERSION_013)));
 	}

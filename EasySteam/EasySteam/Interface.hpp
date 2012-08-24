@@ -29,10 +29,18 @@ namespace EasySteam
 
 		void DoRun();
 
+		IClientEngine* mClientEngine;
+		IClientUtils*  mClientUtils;
+
 		CSteamAPILoader mLoader;
 		CreateInterfaceFn mFactory;
 		ISteamClient012 *mSteamClient;
+		
 		HSteamPipe mPipe;
 		HSteamUser mUser;
+
+		// Friends
+
+		friend class Avatar;
 	};
 }

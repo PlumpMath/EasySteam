@@ -36,6 +36,7 @@ int main()
 		[](EasySteam::Friend::pointer pPtr)
 		{
 			std::cout << pPtr->GetPersonaName() << std::endl;
+			std::cout << pPtr->GetAvatar(EasySteam::Avatar::LARGE)->GetRGBA().size() << std::endl;
 			//pPtr->SendMessage("Hello I am a bot !");
 		});
 
