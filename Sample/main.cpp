@@ -24,7 +24,7 @@ void OnSend(const std::string& pMessage)
 
 int main()
 {
-	EasySteam::Interface& steamInterface = EasySteam::Interface::GetInstance();
+	EasySteam::Interface& steamInterface = *EasySteam::Interface::GetInstance();
 
 	std::cout << "My persona name is : " << steamInterface.GetUser()->GetPersonaName() << std::endl;
 
