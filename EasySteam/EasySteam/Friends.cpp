@@ -7,8 +7,8 @@ namespace EasySteam
 	Friends::iterator::iterator(uint32_t pId)
 		:mId(pId),mData(nullptr)
 	{
-		if(pId < Interface::GetInstance().GetFriends()->GetCount())
-			mData = Interface::GetInstance().GetFriends()->GetFriendById(mId);
+		if(pId < Interface::GetInstance()->GetFriends()->GetCount())
+			mData = Interface::GetInstance()->GetFriends()->GetFriendById(mId);
 	}
 
 	Friends::iterator::iterator(const iterator& pItor)
@@ -21,12 +21,12 @@ namespace EasySteam
 	{
 		++mId;
 		
-		if(mId >= Interface::GetInstance().GetFriends()->GetCount())
+		if(mId >= Interface::GetInstance()->GetFriends()->GetCount())
 		{
 			mData = nullptr;
 		}
 		else
-			mData = Interface::GetInstance().GetFriends()->GetFriendById(mId);
+			mData = Interface::GetInstance()->GetFriends()->GetFriendById(mId);
 
 		return *this;
 	}
@@ -101,7 +101,7 @@ namespace EasySteam
 
 			if(eMsgType == k_EChatEntryTypeChatMsg || eMsgType == k_EChatEntryTypeEmote)
 			{
-				if(msg->m_ulSenderID != Interface::GetInstance().GetUser()->GetSteamID())
+				if(msg->m_ulSenderID != Interface::GetInstance()->GetUser()->GetSteamID())
 				{
 					Friend::pointer ptr(new Friend(msg->m_ulFriendID));
 					OnFriendMessage(message, ptr);

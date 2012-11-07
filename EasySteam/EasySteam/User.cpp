@@ -25,6 +25,11 @@ namespace EasySteam
 
 	std::string User::GetPersonaName()
 	{
-		return std::move(std::string(Interface::GetInstance().GetFriends()->GetPersonaName(GetSteamID())));
+		return std::move(std::string(Interface::GetInstance()->GetFriends()->GetPersonaName(GetSteamID())));
+	}
+
+	bool User::IsLoggedOn()
+	{
+		return mUserImpl->BLoggedOn() && GetSteamID().IsValid();
 	}
 }

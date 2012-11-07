@@ -13,6 +13,8 @@ namespace EasySteam
 		std::string GetUserDirectory(); 
 		std::string GetPersonaName();
 
+		bool IsLoggedOn();
+
 	private:
 
 		User(ISteamUser016* pUserImpl);

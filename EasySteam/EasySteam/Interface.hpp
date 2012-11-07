@@ -12,7 +12,7 @@ namespace EasySteam
 	{
 	public:
 
-		static Interface& GetInstance();
+		static Interface* GetInstance();
 		static void Kill();
 		static void Run();
 

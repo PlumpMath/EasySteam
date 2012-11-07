@@ -4,7 +4,7 @@ namespace EasySteam
 {
 	static Interface* instance = nullptr;
 
-	Interface& Interface::GetInstance()
+	Interface* Interface::GetInstance()
 	{
 		if(instance == nullptr)
 		{
@@ -15,10 +15,9 @@ namespace EasySteam
 			catch (...)
 			{
 				delete instance; instance = nullptr;
-				throw;
 			}
 		}
-		return *instance;
+		return instance;
 	}
 
 	void Interface::Kill()
@@ -42,7 +41,12 @@ namespace EasySteam
 			throw std::runtime_error("Steamclient not started.");
 
 		mPipe = mSteamClient->CreateSteamPipe();
+		if(!mPipe)
+			throw std::runtime_error("Steamclient not started.");
+
 		mUser = mSteamClient->ConnectToGlobalUser(mPipe);
+		if(!mUser)
+			throw std::runtime_error("Steamclient not started.");
 
 		mClientUtils = (IClientUtils*)mClientEngine->GetIClientUtils(mPipe, CLIENTUTILS_INTERFACE_VERSION);
 		mUserImpl.reset(new User((ISteamUser016*)mSteamClient->GetISteamUser(mUser, mPipe, STEAMUSER_INTERFACE_VERSION_016)));

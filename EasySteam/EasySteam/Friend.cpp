@@ -6,7 +6,7 @@
 namespace EasySteam
 {
 	Friend::Friend(CSteamID pId)
-		:mFriends(Interface::GetInstance().GetFriends()), mId(pId)
+		:mFriends(Interface::GetInstance()->GetFriends()), mId(pId)
 	{
 	}
 
